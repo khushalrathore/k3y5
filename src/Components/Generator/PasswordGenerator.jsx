@@ -9,13 +9,43 @@ const PasswordGenerator = () => {
     const [copySuccess, setCopySuccess] = useState(false);
     const [savedPasswords, setSavedPasswords] = useState([]);
 
-    function savePassword() {
+    const handleCopy = (e) => {
+        const copyThis = password;
+
+        navigator.clipboard.writeText(copyThis)
+            .then(() => {
+                setCopySuccess(true);
+                e.target.textContent = "Copied";
+            })
+            .catch((err) => {
+                const textarea = document.createElement("textarea");
+                textarea.value = copyThis;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand("copy");
+                document.body.removeChild(textarea);
+                setCopySuccess(true);
+                e.target.textContent = "Copied";
+                console.log(err)
+            });
+
+        setTimeout(() => {
+            e.target.textContent = "Copy";
+        }, 1000);
+    };
+
+
+    function savePassword(e) {
         if (password && !savedPasswords.includes(password)) {
+            e.target.textContent = "Saved";
             setSavedPasswords((prevSavedPasswords) => {
                 const newSavedPasswords = [password, ...prevSavedPasswords];
                 localStorage.setItem('memPass', JSON.stringify(newSavedPasswords));
                 return newSavedPasswords;
             });
+            setTimeout(() => {
+                e.target.textContent = "Save";
+            }, 1000)
         }
     }
     useEffect(() => {
@@ -43,19 +73,7 @@ const PasswordGenerator = () => {
         passwordGenerator()
     }, [allowNums, allowSpecialChars, passwordGenerator])
 
-    const handleCopy = (e) => {
-        const copyThis = password;
 
-        navigator.clipboard.writeText(copyThis)
-            .then(() => {
-                setCopySuccess(true);
-            })
-            .catch((err) => {
-                setCopySuccess(false);
-                console.error(err);
-            });
-        copySuccess ? e.target.textContent = "Copied" : "";
-    };
 
     return (
         <div className={styles.page} >
@@ -83,7 +101,7 @@ const PasswordGenerator = () => {
                 </div>
             </div>
             <div className={styles.usage}>
-                <button onClick={savePassword} className={`${styles.savePassword} monosans`}>Save & Copy</button>
+                <button onClick={(e) => savePassword(e)} className={`${styles.savePassword} monosans`}>Save</button>
                 <button className={`${styles.copyPassword} monosans`} onClick={(e) => handleCopy(e)} onMouseDown={(e) => handleCopy(e)}>Copy</button>
             </div>
             <div className={`${styles.savedPasswords} monosans`}>
