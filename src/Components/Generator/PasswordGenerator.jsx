@@ -6,7 +6,7 @@ const PasswordGenerator = () => {
     const [allowNums, setAllowNums] = useState(true);
     const [allowSpecialChars, setAllowSpecialChars] = useState(false);
     const [password, setPassword] = useState("");
-
+    const [copySuccess, setCopySuccess] = useState(false);
     const [savedPasswords, setSavedPasswords] = useState([]);
 
     function savePassword() {
@@ -43,8 +43,20 @@ const PasswordGenerator = () => {
         passwordGenerator()
     }, [allowNums, allowSpecialChars, passwordGenerator])
 
+    const handleCopy = (e) => {
+        const copyThis = password;
 
-    console.log("🗣🔥🔥🔥sussy baka spotted")
+        navigator.clipboard.writeText(copyThis)
+            .then(() => {
+                setCopySuccess(true);
+            })
+            .catch((err) => {
+                setCopySuccess(false);
+                console.error(err);
+            });
+        copySuccess ? e.target.textContent = "Copied" : "";
+    };
+
     return (
         <div className={styles.page} >
             <div className={styles.hWrapper}>
@@ -72,7 +84,7 @@ const PasswordGenerator = () => {
             </div>
             <div className={styles.usage}>
                 <button onClick={savePassword} className={`${styles.savePassword} monosans`}>Save & Copy</button>
-                <button className={`${styles.copyPassword} monosans`} >Copy</button>
+                <button className={`${styles.copyPassword} monosans`} onClick={(e) => handleCopy(e)} onMouseDown={(e) => handleCopy(e)}>Copy</button>
             </div>
             <div className={`${styles.savedPasswords} monosans`}>
                 {
