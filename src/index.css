@@ -4,7 +4,10 @@
   box-sizing: border-box;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
 }
+
+
 
 
 .monosans {
@@ -21,6 +24,10 @@ body {
   min-height: 100dvh;
   justify-content: center;
   align-items: start;
+}
+
+#root {
+  position: relative;
 }
 
 body,

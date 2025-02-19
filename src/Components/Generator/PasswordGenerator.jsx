@@ -12,7 +12,7 @@ const PasswordGenerator = () => {
     function savePassword() {
         if (password && !savedPasswords.includes(password)) {
             setSavedPasswords((prevSavedPasswords) => {
-                const newSavedPasswords = [...prevSavedPasswords, password];
+                const newSavedPasswords = [password, ...prevSavedPasswords];
                 localStorage.setItem('memPass', JSON.stringify(newSavedPasswords));
                 return newSavedPasswords;
             });
@@ -43,9 +43,10 @@ const PasswordGenerator = () => {
         passwordGenerator()
     }, [allowNums, allowSpecialChars, passwordGenerator])
 
+
     console.log("🗣🔥🔥🔥sussy baka spotted")
     return (
-        <div className={styles.page}  >
+        <div className={styles.page} >
             <div className={styles.hWrapper}>
                 <span className={`${styles.heading} monosans`}>K3Y5</span>
                 <a href="https://github.com/khushalrathore/k3y5.git" target="_blank" rel="noopener noreferrer">🔗</a>
@@ -70,8 +71,8 @@ const PasswordGenerator = () => {
                 </div>
             </div>
             <div className={styles.usage}>
-                <button onClick={savePassword} className={`${styles.savePassword} monosans`}>Save Password</button>
-                <button className={`${styles.copyPassword} monosans`}>Copy Password</button>
+                <button onClick={savePassword} className={`${styles.savePassword} monosans`}>Save & Copy</button>
+                <button className={`${styles.copyPassword} monosans`} >Copy</button>
             </div>
             <div className={`${styles.savedPasswords} monosans`}>
                 {
